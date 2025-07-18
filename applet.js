@@ -23,10 +23,10 @@ function RunCatApplet(orientation, panel_height, instance_id) {
 }
 
 RunCatApplet.prototype = {
-    __proto__: Applet.TextIconApplet.prototype,
+    __proto__: Applet.IconApplet.prototype,
 
     _init: function(orientation, panel_height, instance_id) {
-        Applet.TextIconApplet.prototype._init.call(this, orientation, panel_height, instance_id);
+        Applet.IconApplet.prototype._init.call(this, orientation, panel_height, instance_id);
         
         this.setAllowedLayout(Applet.AllowedLayout.BOTH);
         
@@ -51,6 +51,9 @@ RunCatApplet.prototype = {
         // CPU monitoring variables
         this.prevActive = 0;
         this.prevTotal = 0;
+        
+        // Create custom label for percentage display
+        this._createPercentageLabel();
         
         // Load sprites
         this._loadSprites();
@@ -180,21 +183,33 @@ RunCatApplet.prototype = {
         return true; // Continue the timeout
     },
 
+    _createPercentageLabel: function() {
+        // Create a custom label for percentage display
+        this.percentageLabel = new St.Label({ text: "", style_class: "applet-label" });
+        this.actor.add_child(this.percentageLabel);
+    },
+
     _updateDisplay: function(percentage) {
         // Handle different display modes
         switch (this.displayingItems) {
             case "character-and-percentage":
                 // Show both icon and percentage text
-                this.set_applet_text(" " + percentage + "%");
+                this.percentageLabel.set_text(" " + percentage + "%");
+                this.percentageLabel.visible = true;
+                this.actor.get_child_at_index(0).visible = true; // Show icon
                 break;
             case "percentage-only":
                 // Show only percentage text
-                this.set_applet_text(percentage + "%");
+                this.percentageLabel.set_text(percentage + "%");
+                this.percentageLabel.visible = true;
+                this.actor.get_child_at_index(0).visible = false; // Hide icon
                 break;
             case "character-only":
             default:
                 // Show only the cat icon
-                this.set_applet_text("");
+                this.percentageLabel.set_text("");
+                this.percentageLabel.visible = false;
+                this.actor.get_child_at_index(0).visible = true; // Show icon
                 break;
         }
     },
@@ -302,7 +317,7 @@ RunCatApplet.prototype = {
             this.settings.finalize();
         }
         
-        Applet.TextIconApplet.prototype.destroy.call(this);
+        Applet.IconApplet.prototype.destroy.call(this);
     }
 };
 
