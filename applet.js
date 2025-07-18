@@ -241,7 +241,7 @@ RunCatApplet.prototype = {
     },
 
     _openSystemMonitor: function() {
-        let command = "gnome-system-monitor -r";
+        let command = "cinnamon-system-monitor || gnome-system-monitor -r || ksysguard || top";
         
         if (this.useCustomSystemMonitor && this.customSystemMonitorCommand) {
             command = this.customSystemMonitorCommand;

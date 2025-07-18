@@ -33,7 +33,7 @@
     },
     "custom-system-monitor-command": {
         "type": "entry",
-        "default": "gnome-system-monitor -r",
+        "default": "cinnamon-system-monitor || gnome-system-monitor -r || ksysguard",
         "description": "Custom system monitor command",
         "tooltip": "Command to run when opening system monitor",
         "dependency": "custom-system-monitor-enabled"

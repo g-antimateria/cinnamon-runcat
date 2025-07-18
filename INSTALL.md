@@ -1,6 +1,6 @@
 # RunCat Cinnamon Applet Installation
 
-This is a port of the GNOME Shell RunCat extension to work as a Cinnamon applet.
+This is a native Cinnamon applet that shows CPU usage with an animated cat.
 
 ## Installation
 
@@ -74,10 +74,10 @@ If the applet doesn't work:
 
 ## Original Extension
 
-This applet is ported from the GNOME Shell extension:
-- Repository: https://github.com/win0err/gnome-runcat
+This applet is inspired by the original RunCat concept:
+- Original Repository: https://github.com/win0err/gnome-runcat
 - Original Author: win0err
 
 ## License
 
-This port maintains the same license as the original extension. 
+This applet maintains the same license as the original RunCat project. 

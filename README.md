@@ -1,12 +1,12 @@
-<img height="165" src="src/resources/se.kolesnikov.runcat.svg" alt="RunCat for GNOME Shell Logo" align="right" />
+<img height="165" src="src/resources/se.kolesnikov.runcat.svg" alt="RunCat for Cinnamon Logo" align="right" />
 
 # RunCat for Cinnamon
 
-**A Cinnamon applet port of the popular GNOME Shell RunCat extension**
+**A native Cinnamon applet that shows CPU usage with an animated cat**
 
 ![RunCat Demo](assets/runcat-header.gif)
 
-The cat tells you the CPU usage by running speed! This is a faithful port of the original [GNOME Shell RunCat extension](https://github.com/win0err/gnome-runcat) to work natively with the Cinnamon desktop environment.
+The cat tells you the CPU usage by running speed! This Cinnamon applet displays an animated cat in your panel whose running speed indicates your system's CPU usage in real-time.
 
 ## 🐱 Features
 
@@ -65,9 +65,9 @@ Access settings by right-clicking the applet:
 
 ## 🎨 Original Extension
 
-This is a port of the excellent GNOME Shell extension:
+This applet is inspired by the excellent RunCat concept:
+- **Original Idea**: RunCat by [win0err](https://github.com/win0err)
 - **Original Repository**: https://github.com/win0err/gnome-runcat
-- **Original Author**: [win0err](https://github.com/win0err)
 - **License**: Same as original (check LICENSE file)
 
 ## 📝 Changes from Original
@@ -106,14 +106,14 @@ Contributions are welcome! Feel free to:
 
 ## 📜 License
 
-This project maintains the same license as the original GNOME extension. See the LICENSE file for details.
+This project maintains the same license as the original RunCat project. See the LICENSE file for details.
 
 ## 🙏 Credits
 
-- **Original Extension**: [win0err/gnome-runcat](https://github.com/win0err/gnome-runcat)
-- **Cinnamon Port**: Adapted for Cinnamon desktop environment
-- **Cat Sprites**: From the original extension
+- **Original RunCat Concept**: [win0err/runcat](https://github.com/win0err/gnome-runcat)
+- **Cinnamon Implementation**: Native Cinnamon applet development
+- **Cat Sprites**: Adapted from the original RunCat project
 
 ---
 
-*If you enjoy this applet, please consider starring the repository and checking out the original GNOME extension!*
+*If you enjoy this applet, please consider starring the repository and checking out the original RunCat project!*
