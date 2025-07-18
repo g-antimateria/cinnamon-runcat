@@ -52,7 +52,7 @@ RunCatApplet.prototype = {
         this.prevActive = 0;
         this.prevTotal = 0;
         
-        // Create custom label for percentage display (will be added later)
+        // Keep it simple - no custom layout needed
         this.percentageLabel = null;
         
         // Load sprites
@@ -185,32 +185,13 @@ RunCatApplet.prototype = {
 
     _createPercentageLabel: function() {
         if (!this.percentageLabel) {
-            // Create a horizontal box to hold both icon and text (like flex with align-items: center)
-            this.mainBox = new St.BoxLayout({ 
-                vertical: false, 
-                style_class: "applet-box",
-                y_align: St.Align.MIDDLE,
-                style: "spacing: 4px;"
-            });
-            
-            // Move the existing icon to the box
-            let icon = this.actor.get_child_at_index(0);
-            if (icon) {
-                this.actor.remove_child(icon);
-                this.mainBox.add_child(icon);
-            }
-            
-            // Create the percentage label
+            // Simple approach - just add a label next to the icon
             this.percentageLabel = new St.Label({ 
                 text: "",
                 style_class: "applet-label",
-                y_align: St.Align.MIDDLE,
-                style: "font-size: 0.9em;"
+                y_align: St.Align.MIDDLE
             });
-            this.mainBox.add_child(this.percentageLabel);
-            
-            // Add the box to the actor
-            this.actor.add_child(this.mainBox);
+            this.actor.add_child(this.percentageLabel);
         }
     },
 
@@ -220,23 +201,18 @@ RunCatApplet.prototype = {
             this._createPercentageLabel();
         }
         
-        // Handle different display modes
+        // Handle different display modes - keep it simple
         switch (this.displayingItems) {
             case "character-and-percentage":
                 // Show both icon and percentage text
                 this.percentageLabel.set_text(" " + percentage + "%");
                 this.percentageLabel.visible = true;
-                if (this.mainBox) {
-                    this.mainBox.get_child_at_index(0).visible = true; // Show icon
-                }
                 break;
             case "percentage-only":
-                // Show only percentage text
+                // Show only percentage text - hide icon with empty path
                 this.percentageLabel.set_text(percentage + "%");
                 this.percentageLabel.visible = true;
-                if (this.mainBox) {
-                    this.mainBox.get_child_at_index(0).visible = false; // Hide icon
-                }
+                this.set_applet_icon_symbolic_name(""); // Hide icon
                 break;
             case "character-only":
             default:
@@ -245,9 +221,8 @@ RunCatApplet.prototype = {
                     this.percentageLabel.set_text("");
                     this.percentageLabel.visible = false;
                 }
-                if (this.mainBox) {
-                    this.mainBox.get_child_at_index(0).visible = true; // Show icon
-                }
+                // Make sure icon is visible
+                this._setIcon();
                 break;
         }
     },
