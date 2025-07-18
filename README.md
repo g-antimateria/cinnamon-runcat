@@ -2,8 +2,6 @@
 
 This is a Cinnamon desktop applet that displays an animated cat in your panel to indicate CPU usage. The faster the cat runs, the higher the CPU load.
 
-![RunCat Header](assets/runcat-header.gif)
-
 ## About
 
 This project is a port of the popular [RunCat](https://github.com/Kyome22/RunCat_for_windows) utility to the Cinnamon desktop environment. It provides a simple, fun, and visual way to keep an eye on your system's performance.
