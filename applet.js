@@ -52,7 +52,7 @@ RunCatApplet.prototype = {
         this.prevActive = 0;
         this.prevTotal = 0;
         
-        // Keep it simple - no custom layout needed
+        // Back to basics - no custom containers
         this.percentageLabel = null;
         
         // Load sprites
@@ -108,17 +108,11 @@ RunCatApplet.prototype = {
             iconPath = "system-run-symbolic";
         }
         
-        // Set icon on both the default applet icon and our custom icon widget
+        // Keep it simple - just use the default applet icon
         if (iconPath.includes("/")) {
             this.set_applet_icon_path(iconPath);
-            if (this.iconWidget) {
-                this.iconWidget.set_gicon(Gio.icon_new_for_string(iconPath));
-            }
         } else {
             this.set_applet_icon_symbolic_name(iconPath);
-            if (this.iconWidget) {
-                this.iconWidget.set_icon_name(iconPath);
-            }
         }
     },
 
@@ -190,36 +184,13 @@ RunCatApplet.prototype = {
     },
 
     _createPercentageLabel: function() {
-        if (!this.container) {
-            // Create container for proper alignment
-            this.container = new St.BoxLayout({ 
-                vertical: false,
-                style_class: "applet-box",
-                y_align: St.Align.MIDDLE,
-                x_align: St.Align.START,
-                height: this.panel_height || 24,
-                style: "spacing: 4px;"
-            });
-            
-            // Create the icon widget
-            this.iconWidget = new St.Icon({ 
-                icon_size: 22,
-                style_class: "applet-icon"
-            });
-            
-            // Create the percentage label
+        if (!this.percentageLabel) {
+            // Ultra simple - just add text to the applet label
             this.percentageLabel = new St.Label({ 
                 text: "",
-                style_class: "applet-label",
-                y_align: St.Align.MIDDLE
+                style_class: "applet-label"
             });
-            
-            // Replace default layout
-            this.actor.remove_all_children();
-            this.actor.set_style("height: " + (this.panel_height || 24) + "px;");
-            this.actor.add_child(this.container);
-            this.container.add_child(this.iconWidget);
-            this.container.add_child(this.percentageLabel);
+            this.actor.add_child(this.percentageLabel);
         }
     },
 
@@ -228,21 +199,19 @@ RunCatApplet.prototype = {
         
         switch (this.displayingItems) {
             case "character-and-percentage":
-                if (this.iconWidget) this.iconWidget.visible = true;
                 this.percentageLabel.set_text(" " + percentage + "%");
                 this.percentageLabel.visible = true;
                 break;
             case "percentage-only":
-                if (this.iconWidget) this.iconWidget.visible = false;
                 this.percentageLabel.set_text(percentage + "%");
                 this.percentageLabel.visible = true;
+                this.set_applet_icon_symbolic_name(""); // Hide icon
                 break;
             case "character-only":
             default:
-                if (this.iconWidget) this.iconWidget.visible = true;
                 this.percentageLabel.set_text("");
                 this.percentageLabel.visible = false;
-                this._setIcon();
+                this._setIcon(); // Show icon
                 break;
         }
     },
