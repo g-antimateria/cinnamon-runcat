@@ -184,8 +184,13 @@ RunCatApplet.prototype = {
     },
 
     _createPercentageLabel: function() {
-        // Create a custom label for percentage display
-        this.percentageLabel = new St.Label({ text: "", style_class: "applet-label" });
+        // Create a custom label for percentage display with proper alignment
+        this.percentageLabel = new St.Label({ 
+            text: "", 
+            style_class: "applet-label",
+            y_align: St.Align.MIDDLE,
+            style: "margin-left: 4px; font-size: 0.9em;"
+        });
         this.actor.add_child(this.percentageLabel);
     },
 
