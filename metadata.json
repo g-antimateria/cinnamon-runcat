@@ -1,14 +1,10 @@
 {
-    "uuid": "runcat@gabriele",
-    "name": "RunCat",
-    "description": "The cat tells you the CPU usage by running speed",
-    "version": "1.0",
-    "applet-version": "1.0",
-    "last-edited": "1732543200",
-    "author": "Gabriele (inspired by win0err/runcat)",
-    "website": "https://github.com/g-antimateria/cinnamon-runcat",
-    "icon": "system-run-symbolic",
-    "max-instances": 10,
-    "multiversion": true,
-    "cinnamon-version": ["4.0", "4.2", "4.4", "4.6", "4.8", "5.0", "5.2", "5.4", "5.6", "5.8", "6.0", "6.2"]
+  "uuid": "runcat-cinnamon@port",
+  "name": "RunCat",
+  "description": "A cat in your panel that runs at the speed of your CPU",
+  "icon": "icons/runcat/active/sprite-0-symbolic.svg",
+  "version": "1.0.0",
+  "multiversion": "4.0+",
+  "author": "Ported to Cinnamon",
+  "website": "https://github.com/your-repo/runcat-cinnamon"
 } 

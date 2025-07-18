@@ -16,19 +16,26 @@ try {
     GTop = null;
 }
 
-const UUID = "runcat@gabriele";
+const UUID = "runcat-cinnamon@port";
 
-function RunCatApplet(orientation, panel_height, instance_id) {
-    this._init(orientation, panel_height, instance_id);
+function RunCatApplet(metadata, orientation, panel_height, instance_id) {
+    this._init(metadata, orientation, panel_height, instance_id);
 }
 
 RunCatApplet.prototype = {
     __proto__: Applet.IconApplet.prototype,
 
-    _init: function(orientation, panel_height, instance_id) {
+    _init: function(metadata, orientation, panel_height, instance_id) {
         Applet.IconApplet.prototype._init.call(this, orientation, panel_height, instance_id);
+        this.metadata = metadata;
         
         this.setAllowedLayout(Applet.AllowedLayout.BOTH);
+
+        // Load stylesheet
+        let stylesheet = this.metadata.path + '/stylesheet.css';
+        if (GLib.file_test(stylesheet, GLib.FileTest.EXISTS)) {
+            this.set_applet_stylesheet_file(stylesheet);
+        }
         
         // Initialize settings
         this.settings = new Settings.AppletSettings(this, UUID, instance_id);
@@ -69,7 +76,7 @@ RunCatApplet.prototype = {
     },
 
     _loadSprites: function() {
-        const appletPath = global.userdatadir + "/applets/" + UUID;
+        const appletPath = this.metadata.path;
         
         // Load active sprites (sprite-0 through sprite-4)
         this.activeSprites = [];
@@ -185,14 +192,17 @@ RunCatApplet.prototype = {
 
     _createPercentageLabel: function() {
         if (!this.percentageLabel) {
-            // Create label with explicit vertical centering
             this.percentageLabel = new St.Label({ 
                 text: "",
-                style_class: "applet-label",
-                y_align: St.Align.MIDDLE,
-                style: "font-size: 0.9em; margin-top: " + ((this.panel_height || 24) / 2 - 8) + "px;"
+                style_class: "applet-label runcat-percentage-label"
             });
-            this.actor.add_child(this.percentageLabel);
+
+            let bin = new St.Bin({
+                child: this.percentageLabel,
+                y_align: St.Align.MIDDLE
+            });
+            
+            this.actor.add_child(bin);
         }
     },
 
@@ -203,6 +213,7 @@ RunCatApplet.prototype = {
             case "character-and-percentage":
                 this.percentageLabel.set_text(" " + percentage + "%");
                 this.percentageLabel.visible = true;
+                this._setIcon(); // Ensure icon is visible
                 break;
             case "percentage-only":
                 this.percentageLabel.set_text(percentage + "%");
@@ -219,6 +230,13 @@ RunCatApplet.prototype = {
     },
 
     _updateAnimation: function() {
+        if (this.displayingItems === 'percentage-only') {
+            // When only percentage is shown, don't update the icon/animation.
+            // Just schedule a check for later.
+            this.sourceIds.animation = Mainloop.timeout_add(1000, Lang.bind(this, this._updateAnimation));
+            return false;
+        }
+
         if (this.isActive) {
             // Calculate animation speed based on CPU usage
             let utilization = this.cpuUsage;
@@ -284,7 +302,21 @@ RunCatApplet.prototype = {
     },
 
     _openSystemMonitor: function() {
-        let command = "cinnamon-system-monitor || gnome-system-monitor -r || ksysguard || top";
+        const commands = {
+            "cinnamon-system-monitor": [],
+            "gnome-system-monitor": ["-r"],
+            "mate-system-monitor": [],
+            "xfce4-taskmanager": [],
+            "ksysguard": [],
+        };
+        let command = "top"; // Fallback command
+
+        for (let cmd in commands) {
+            if (GLib.find_program_in_path(cmd)) {
+                command = cmd;
+                break;
+            }
+        }
         
         if (this.useCustomSystemMonitor && this.customSystemMonitorCommand) {
             command = this.customSystemMonitorCommand;
@@ -326,5 +358,5 @@ RunCatApplet.prototype = {
 };
 
 function main(metadata, orientation, panel_height, instance_id) {
-    return new RunCatApplet(orientation, panel_height, instance_id);
+    return new RunCatApplet(metadata, orientation, panel_height, instance_id);
 } 

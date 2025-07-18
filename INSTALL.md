@@ -1,24 +1,42 @@
-# RunCat Cinnamon Applet Installation
+# Installation Guide
 
-This is a native Cinnamon applet that shows CPU usage with an animated cat.
+This guide will help you install the RunCat applet on your Cinnamon desktop.
 
-## Installation
+## Automated Installation (Recommended)
 
-1. **Copy the applet to your Cinnamon applets directory:**
-   ```bash
-   mkdir -p ~/.local/share/cinnamon/applets/runcat@gabriele
-   cp -r applet.js metadata.json settings-schema.json icons ~/.local/share/cinnamon/applets/runcat@gabriele/
-   ```
+The easiest way to install the applet is to use the provided script.
 
-2. **Restart Cinnamon or reload applets:**
-   - Press `Alt + F2`, type `r`, and press Enter
-   - Or log out and log back in
+1.  **Open a terminal** in the project directory.
+2.  **Make the script executable**:
+    ```bash
+    chmod +x install.sh
+    ```
+3.  **Run the script**:
+    ```bash
+    ./install.sh
+    ```
+4.  **Reload Cinnamon**: Right-click on your panel, select "Troubleshoot", and then "Restart Cinnamon".
+5.  **Add the applet**: Right-click on your panel, select "Applets", find "RunCat", and click the "+" button to add it.
 
-3. **Add the applet to your panel:**
-   - Right-click on your panel
-   - Select "Applets"
-   - Find "RunCat" in the list
-   - Click the "+" button to add it
+## Manual Installation
+
+If you prefer to install the applet manually, follow these steps:
+
+1.  **Define the UUID**: The applet's UUID is `runcat-cinnamon@port`.
+2.  **Create the directory**:
+    ```bash
+    mkdir -p ~/.local/share/cinnamon/applets/runcat-cinnamon@port
+    ```
+3.  **Copy the files**: Copy `applet.js`, `metadata.json`, `stylesheet.css`, and the `icons` directory into the folder you just created.
+4.  **Reload Cinnamon**: As mentioned above, restart Cinnamon through the "Troubleshoot" menu.
+5.  **Add the applet** to your panel via the "Applets" menu.
+
+## Viewing Logs
+
+If you encounter issues, you can view the applet's logs by checking the `~/.cinnamon/glass.log` file or by running the following command in a terminal:
+```bash
+journalctl -f -o cat /usr/bin/cinnamon | grep -i runcat
+```
 
 ## Features
 
