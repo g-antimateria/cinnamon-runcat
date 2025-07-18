@@ -1,0 +1,41 @@
+{
+    "idle-threshold": {
+        "type": "scale",
+        "default": 0,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "description": "Idle threshold (%)",
+        "tooltip": "CPU usage threshold below which the cat will be idle"
+    },
+    "displaying-items": {
+        "type": "combobox",
+        "default": "character-only",
+        "options": {
+            "Character and Percentage": "character-and-percentage",
+            "Percentage Only": "percentage-only", 
+            "Character Only": "character-only"
+        },
+        "description": "Display items",
+        "tooltip": "Choose what to display in the panel"
+    },
+    "invert-speed": {
+        "type": "checkbox",
+        "default": false,
+        "description": "Invert speed",
+        "tooltip": "When enabled, the cat runs slower when CPU usage is higher"
+    },
+    "custom-system-monitor-enabled": {
+        "type": "checkbox",
+        "default": false,
+        "description": "Use custom system monitor",
+        "tooltip": "Enable to use a custom command for opening system monitor"
+    },
+    "custom-system-monitor-command": {
+        "type": "entry",
+        "default": "gnome-system-monitor -r",
+        "description": "Custom system monitor command",
+        "tooltip": "Command to run when opening system monitor",
+        "dependency": "custom-system-monitor-enabled"
+    }
+} 
