@@ -185,11 +185,12 @@ RunCatApplet.prototype = {
 
     _createPercentageLabel: function() {
         if (!this.percentageLabel) {
-            // Simple approach - just add a label next to the icon
+            // Create label with same height as panel for proper centering
             this.percentageLabel = new St.Label({ 
                 text: "",
                 style_class: "applet-label",
-                y_align: St.Align.MIDDLE
+                y_align: St.Align.MIDDLE,
+                height: this.panel_height || 24
             });
             this.actor.add_child(this.percentageLabel);
         }
