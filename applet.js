@@ -184,45 +184,49 @@ RunCatApplet.prototype = {
     },
 
     _createPercentageLabel: function() {
-        if (!this.percentageLabel) {
-            // Create label with same height as panel for proper centering
+        if (!this.container) {
+            // Create container for proper alignment
+            this.container = new St.BoxLayout({ 
+                vertical: false,
+                style_class: "applet-box",
+                y_align: St.Align.MIDDLE,
+                x_align: St.Align.START
+            });
+            
+            // Create the percentage label
             this.percentageLabel = new St.Label({ 
                 text: "",
                 style_class: "applet-label",
-                y_align: St.Align.MIDDLE,
-                height: this.panel_height || 24
+                y_align: St.Align.MIDDLE
             });
-            this.actor.add_child(this.percentageLabel);
+            
+            // Replace default layout
+            this.actor.remove_all_children();
+            this.actor.add_child(this.container);
+            this.container.add_child(this._applet_icon);
+            this.container.add_child(this.percentageLabel);
         }
     },
 
     _updateDisplay: function(percentage) {
-        // Create the label if it doesn't exist
-        if (!this.percentageLabel) {
-            this._createPercentageLabel();
-        }
+        this._createPercentageLabel();
         
-        // Handle different display modes - keep it simple
         switch (this.displayingItems) {
             case "character-and-percentage":
-                // Show both icon and percentage text
+                this._applet_icon.visible = true;
                 this.percentageLabel.set_text(" " + percentage + "%");
                 this.percentageLabel.visible = true;
                 break;
             case "percentage-only":
-                // Show only percentage text - hide icon with empty path
+                this._applet_icon.visible = false;
                 this.percentageLabel.set_text(percentage + "%");
                 this.percentageLabel.visible = true;
-                this.set_applet_icon_symbolic_name(""); // Hide icon
                 break;
             case "character-only":
             default:
-                // Show only the cat icon
-                if (this.percentageLabel) {
-                    this.percentageLabel.set_text("");
-                    this.percentageLabel.visible = false;
-                }
-                // Make sure icon is visible
+                this._applet_icon.visible = true;
+                this.percentageLabel.set_text("");
+                this.percentageLabel.visible = false;
                 this._setIcon();
                 break;
         }
