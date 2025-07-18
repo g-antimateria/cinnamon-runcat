@@ -185,10 +185,12 @@ RunCatApplet.prototype = {
 
     _createPercentageLabel: function() {
         if (!this.percentageLabel) {
-            // Create a horizontal box to hold both icon and text
+            // Create a horizontal box to hold both icon and text (like flex with align-items: center)
             this.mainBox = new St.BoxLayout({ 
                 vertical: false, 
-                style_class: "applet-box"
+                style_class: "applet-box",
+                y_align: St.Align.MIDDLE,
+                style: "spacing: 4px;"
             });
             
             // Move the existing icon to the box
@@ -202,7 +204,8 @@ RunCatApplet.prototype = {
             this.percentageLabel = new St.Label({ 
                 text: "",
                 style_class: "applet-label",
-                y_align: St.Align.MIDDLE
+                y_align: St.Align.MIDDLE,
+                style: "font-size: 0.9em;"
             });
             this.mainBox.add_child(this.percentageLabel);
             
