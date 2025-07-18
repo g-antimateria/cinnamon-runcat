@@ -196,7 +196,9 @@ RunCatApplet.prototype = {
                 vertical: false,
                 style_class: "applet-box",
                 y_align: St.Align.MIDDLE,
-                x_align: St.Align.START
+                x_align: St.Align.START,
+                height: this.panel_height || 24,
+                style: "spacing: 4px;"
             });
             
             // Create the icon widget
@@ -214,6 +216,7 @@ RunCatApplet.prototype = {
             
             // Replace default layout
             this.actor.remove_all_children();
+            this.actor.set_style("height: " + (this.panel_height || 24) + "px;");
             this.actor.add_child(this.container);
             this.container.add_child(this.iconWidget);
             this.container.add_child(this.percentageLabel);
