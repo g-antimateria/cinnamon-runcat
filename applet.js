@@ -23,10 +23,10 @@ function RunCatApplet(orientation, panel_height, instance_id) {
 }
 
 RunCatApplet.prototype = {
-    __proto__: Applet.IconApplet.prototype,
+    __proto__: Applet.TextIconApplet.prototype,
 
     _init: function(orientation, panel_height, instance_id) {
-        Applet.IconApplet.prototype._init.call(this, orientation, panel_height, instance_id);
+        Applet.TextIconApplet.prototype._init.call(this, orientation, panel_height, instance_id);
         
         this.setAllowedLayout(Applet.AllowedLayout.BOTH);
         
@@ -160,9 +160,14 @@ RunCatApplet.prototype = {
     _updateCPUUsage: function() {
         this.cpuUsage = this._getCPUUsage();
         
-        // Update tooltip
+        // Calculate percentage
         const percentage = Math.round(this.cpuUsage * 100);
+        
+        // Update tooltip
         this.set_applet_tooltip("CPU: " + percentage + "%");
+        
+        // Update display based on settings
+        this._updateDisplay(percentage);
         
         // Determine if cat should be active
         const threshold = this.idleThreshold / 100;
@@ -173,6 +178,31 @@ RunCatApplet.prototype = {
         }
         
         return true; // Continue the timeout
+    },
+
+    _updateDisplay: function(percentage) {
+        // Handle different display modes
+        switch (this.displayingItems) {
+            case "character-and-percentage":
+                // Show both icon and percentage text
+                this.set_applet_text(percentage + "%");
+                this.hide_applet_label(false);
+                this.hide_applet_icon(false);
+                break;
+            case "percentage-only":
+                // Show only percentage text
+                this.set_applet_text(percentage + "%");
+                this.hide_applet_label(false);
+                this.hide_applet_icon(true);
+                break;
+            case "character-only":
+            default:
+                // Show only the cat icon
+                this.set_applet_text("");
+                this.hide_applet_label(true);
+                this.hide_applet_icon(false);
+                break;
+        }
     },
 
     _updateAnimation: function() {
@@ -255,8 +285,9 @@ RunCatApplet.prototype = {
     },
 
     _onSettingsChanged: function() {
-        // Settings have changed, update accordingly
-        // This will be called when any bound setting changes
+        // Settings have changed, update display
+        const percentage = Math.round(this.cpuUsage * 100);
+        this._updateDisplay(percentage);
     },
 
     on_applet_clicked: function() {
@@ -277,7 +308,7 @@ RunCatApplet.prototype = {
             this.settings.finalize();
         }
         
-        Applet.IconApplet.prototype.destroy.call(this);
+        Applet.TextIconApplet.prototype.destroy.call(this);
     }
 };
 

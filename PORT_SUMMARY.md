@@ -22,7 +22,7 @@ A native Cinnamon applet has been successfully developed based on the RunCat con
 ### 1. Native Cinnamon Implementation
 - **Panel Integration**: Uses Cinnamon's automatic applet panel integration
 - **Icon Display**: Uses `this.set_applet_icon_path()` for dynamic icon updates
-- **Base Class**: Extends `Applet.IconApplet` for proper Cinnamon applet structure
+- **Base Class**: Extends `Applet.TextIconApplet` for proper Cinnamon applet structure with text and icon support
 - **Settings**: Uses `Settings.AppletSettings` for native Cinnamon configuration
 
 ### 2. CPU Monitoring
