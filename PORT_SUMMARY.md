@@ -15,7 +15,7 @@ The GNOME Shell RunCat extension has been successfully ported to work as a Cinna
 - `icons/runcat/active/` - 5 running cat sprites (copied from original)
 - `icons/runcat/idle/` - 1 idle cat sprite (copied from original)
 - `INSTALL.md` - Installation instructions
-- `test-install.sh` - Automated installation script
+- `install.sh` - Automated installation script
 
 ## Key Changes Made
 
@@ -77,9 +77,9 @@ The GNOME Shell RunCat extension has been successfully ported to work as a Cinna
 
 ## Installation
 
-Run the included test script:
+Run the included installation script:
 ```bash
-./test-install.sh
+./install.sh
 ```
 
 Or install manually:

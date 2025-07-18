@@ -27,7 +27,7 @@ The cat tells you the CPU usage by running speed! This is a faithful port of the
 ```bash
 git clone https://github.com/g-antimateria/cinnamon-runcat.git
 cd cinnamon-runcat
-./test-install.sh
+./install.sh
 ```
 
 ### Manual Install
