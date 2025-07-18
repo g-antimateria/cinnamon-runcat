@@ -185,10 +185,12 @@ RunCatApplet.prototype = {
 
     _createPercentageLabel: function() {
         if (!this.percentageLabel) {
-            // Ultra simple - just add text to the applet label
+            // Create label with explicit vertical centering
             this.percentageLabel = new St.Label({ 
                 text: "",
-                style_class: "applet-label"
+                style_class: "applet-label",
+                y_align: St.Align.MIDDLE,
+                style: "font-size: 0.9em; margin-top: " + ((this.panel_height || 24) / 2 - 8) + "px;"
             });
             this.actor.add_child(this.percentageLabel);
         }
