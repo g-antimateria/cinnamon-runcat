@@ -52,8 +52,8 @@ RunCatApplet.prototype = {
         this.prevActive = 0;
         this.prevTotal = 0;
         
-        // Create custom label for percentage display
-        this._createPercentageLabel();
+        // Create custom label for percentage display (will be added later)
+        this.percentageLabel = null;
         
         // Load sprites
         this._loadSprites();
@@ -184,37 +184,67 @@ RunCatApplet.prototype = {
     },
 
     _createPercentageLabel: function() {
-        // Create a custom label for percentage display with proper alignment
-        this.percentageLabel = new St.Label({ 
-            text: "", 
-            style_class: "applet-label",
-            y_align: St.Align.MIDDLE,
-            style: "margin-left: 4px; font-size: 0.9em;"
-        });
-        this.actor.add_child(this.percentageLabel);
+        if (!this.percentageLabel) {
+            // Create a horizontal box to hold both icon and text
+            this.mainBox = new St.BoxLayout({ 
+                vertical: false, 
+                style_class: "applet-box"
+            });
+            
+            // Move the existing icon to the box
+            let icon = this.actor.get_child_at_index(0);
+            if (icon) {
+                this.actor.remove_child(icon);
+                this.mainBox.add_child(icon);
+            }
+            
+            // Create the percentage label
+            this.percentageLabel = new St.Label({ 
+                text: "",
+                style_class: "applet-label",
+                y_align: St.Align.MIDDLE
+            });
+            this.mainBox.add_child(this.percentageLabel);
+            
+            // Add the box to the actor
+            this.actor.add_child(this.mainBox);
+        }
     },
 
     _updateDisplay: function(percentage) {
+        // Create the label if it doesn't exist
+        if (!this.percentageLabel) {
+            this._createPercentageLabel();
+        }
+        
         // Handle different display modes
         switch (this.displayingItems) {
             case "character-and-percentage":
                 // Show both icon and percentage text
                 this.percentageLabel.set_text(" " + percentage + "%");
                 this.percentageLabel.visible = true;
-                this.actor.get_child_at_index(0).visible = true; // Show icon
+                if (this.mainBox) {
+                    this.mainBox.get_child_at_index(0).visible = true; // Show icon
+                }
                 break;
             case "percentage-only":
                 // Show only percentage text
                 this.percentageLabel.set_text(percentage + "%");
                 this.percentageLabel.visible = true;
-                this.actor.get_child_at_index(0).visible = false; // Hide icon
+                if (this.mainBox) {
+                    this.mainBox.get_child_at_index(0).visible = false; // Hide icon
+                }
                 break;
             case "character-only":
             default:
                 // Show only the cat icon
-                this.percentageLabel.set_text("");
-                this.percentageLabel.visible = false;
-                this.actor.get_child_at_index(0).visible = true; // Show icon
+                if (this.percentageLabel) {
+                    this.percentageLabel.set_text("");
+                    this.percentageLabel.visible = false;
+                }
+                if (this.mainBox) {
+                    this.mainBox.get_child_at_index(0).visible = true; // Show icon
+                }
                 break;
         }
     },
