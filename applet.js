@@ -108,11 +108,17 @@ RunCatApplet.prototype = {
             iconPath = "system-run-symbolic";
         }
         
-        // Check if it's a path or icon name
+        // Set icon on both the default applet icon and our custom icon widget
         if (iconPath.includes("/")) {
             this.set_applet_icon_path(iconPath);
+            if (this.iconWidget) {
+                this.iconWidget.set_gicon(Gio.icon_new_for_string(iconPath));
+            }
         } else {
             this.set_applet_icon_symbolic_name(iconPath);
+            if (this.iconWidget) {
+                this.iconWidget.set_icon_name(iconPath);
+            }
         }
     },
 
@@ -193,6 +199,12 @@ RunCatApplet.prototype = {
                 x_align: St.Align.START
             });
             
+            // Create the icon widget
+            this.iconWidget = new St.Icon({ 
+                icon_size: 22,
+                style_class: "applet-icon"
+            });
+            
             // Create the percentage label
             this.percentageLabel = new St.Label({ 
                 text: "",
@@ -203,7 +215,7 @@ RunCatApplet.prototype = {
             // Replace default layout
             this.actor.remove_all_children();
             this.actor.add_child(this.container);
-            this.container.add_child(this._applet_icon);
+            this.container.add_child(this.iconWidget);
             this.container.add_child(this.percentageLabel);
         }
     },
@@ -213,18 +225,18 @@ RunCatApplet.prototype = {
         
         switch (this.displayingItems) {
             case "character-and-percentage":
-                this._applet_icon.visible = true;
+                if (this.iconWidget) this.iconWidget.visible = true;
                 this.percentageLabel.set_text(" " + percentage + "%");
                 this.percentageLabel.visible = true;
                 break;
             case "percentage-only":
-                this._applet_icon.visible = false;
+                if (this.iconWidget) this.iconWidget.visible = false;
                 this.percentageLabel.set_text(percentage + "%");
                 this.percentageLabel.visible = true;
                 break;
             case "character-only":
             default:
-                this._applet_icon.visible = true;
+                if (this.iconWidget) this.iconWidget.visible = true;
                 this.percentageLabel.set_text("");
                 this.percentageLabel.visible = false;
                 this._setIcon();
