@@ -185,22 +185,16 @@ RunCatApplet.prototype = {
         switch (this.displayingItems) {
             case "character-and-percentage":
                 // Show both icon and percentage text
-                this.set_applet_text(percentage + "%");
-                this.hide_applet_label(false);
-                this.hide_applet_icon(false);
+                this.set_applet_text(" " + percentage + "%");
                 break;
             case "percentage-only":
                 // Show only percentage text
                 this.set_applet_text(percentage + "%");
-                this.hide_applet_label(false);
-                this.hide_applet_icon(true);
                 break;
             case "character-only":
             default:
                 // Show only the cat icon
                 this.set_applet_text("");
-                this.hide_applet_label(true);
-                this.hide_applet_icon(false);
                 break;
         }
     },
